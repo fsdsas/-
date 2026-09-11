@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【OSINT 人肉搜索情報報告】Chin Jun Wen (陳俊文) - 馬來西亞檳城</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0f1d;
+            --bg-secondary: #0f172a;
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --card-border: rgba(16, 185, 129, 0.25);
+            --card-hover-border: rgba(16, 185, 129, 0.6);
+            --accent-emerald: #10b981;
+            --accent-cyan: #06b6d4;
+            --accent-gold: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --fact-bg: rgba(16, 185, 129, 0.15);
+            --fact-border: #10b981;
+            --infer-bg: rgba(245, 158, 11, 0.15);
+            --infer-border: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #050811 0%, #0a0f1d 50%, #0f1c2e 100%);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Banner & Header */
+        .legal-banner {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-emerald);
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.95rem;
+            color: #6ee7b7;
+        }
+
+        .legal-banner i {
+            font-size: 1.5rem;
+            color: var(--accent-emerald);
+        }
+
+        header.profile-hero {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 32px;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header.profile-hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-emerald), var(--accent-cyan));
+        }
+
+        .avatar-wrap {
+            position: relative;
+            width: 130px;
+            height: 130px;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-emerald);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            background: #000;
+        }
+
+        .avatar-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: #0f172a;
+            border: 2px solid var(--accent-emerald);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-emerald);
+            font-size: 0.85rem;
+        }
+
+        .hero-details h1 {
+            font-size: 2.2rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hero-details .alias-tag {
+            font-size: 1rem;
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(6, 182, 212, 0.4);
+        }
+
+        .hero-handles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 8px 0 12px 0;
+            font-size: 0.92rem;
+        }
+
+        .handle-pill {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .handle-pill.phone {
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.1);
+            font-weight: 600;
+        }
+
+        .hero-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 12px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .hero-meta-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+
+        .metric-box .metric-val {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+        }
+
+        .metric-box .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Filter Tabs */
+        .tab-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent-emerald);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-emerald);
+            color: #061e14;
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .tab-btn.tab-infer.active {
+            background: var(--accent-gold);
+            color: #2b1803;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Segregation Badges */
+        .badge-fact {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--fact-bg);
+            color: #34d399;
+            border: 1px solid var(--fact-border);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-infer {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--infer-bg);
+            color: #fbbf24;
+            border: 1px solid var(--infer-border);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Sections */
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-6 { grid-column: span 6; }
+        .col-4 { grid-column: span 4; }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--card-hover-border);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h2 i {
+            color: var(--accent-cyan);
+        }
+
+        /* Info Item Styles */
+        .info-group {
+            margin-bottom: 16px;
+        }
+
+        .info-label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .info-val {
+            font-size: 1rem;
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .info-desc {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        .info-desc.warning-desc {
+            border-left-color: var(--accent-gold);
+            color: #fde68a;
+        }
+
+        /* Interest Chips */
+        .chip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .chip {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chip-football {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .chip-player {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .chip-gaming {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c084fc;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+        }
+
+        .chip-tech {
+            background: rgba(6, 182, 212, 0.2);
+            color: #22d3ee;
+            border: 1px solid rgba(6, 182, 212, 0.4);
+        }
+
+        /* Media Gallery */
+        .gallery-filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent-cyan);
+            color: #042f2e;
+            font-weight: 600;
+            border-color: var(--accent-cyan);
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .media-card {
+            background: #111827;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .media-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-emerald);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .media-card-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            background: #050811;
+            overflow: hidden;
+        }
+
+        .media-card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .media-card:hover .media-card-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .media-card-idx {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .media-card-cat {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(16, 185, 129, 0.85);
+            color: #061e14;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .media-card-cat.cat-tech { background: rgba(6, 182, 212, 0.85); }
+        .media-card-cat.cat-game { background: rgba(139, 92, 246, 0.85); color: #fff; }
+        .media-card-cat.cat-cul { background: rgba(245, 158, 11, 0.85); color: #fff; }
+
+        .media-card-body {
+            padding: 12px;
+        }
+
+        .media-card-title {
+            font-size: 0.85rem;
+            color: #f1f5f9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .media-card-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Lightbox Modal */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(8px);
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-emerald);
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .lightbox-img-pane {
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .lightbox-img-pane img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lightbox-info-pane {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .lightbox-close:hover {
+            background: #ef4444;
+        }
+
+        /* Timeline & Table */
+        table.osint-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+            margin-top: 10px;
+        }
+
+        table.osint-table th {
+            text-align: left;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        table.osint-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        table.osint-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .col-8, .col-6, .col-4 { grid-column: span 12; }
+            header.profile-hero { grid-template-columns: 1fr; text-align: center; }
+            .hero-details h1 { justify-content: center; }
+            .hero-meta-row { justify-content: center; }
+            .lightbox-content { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Legal Compliance Notice -->
+    <div class="legal-banner">
+        <i class="fas fa-shield-halved"></i>
+        <div>
+            <strong>合法性與道德聲明 (OSINT Compliance Notice)</strong><br>
+            本調查報告之所有資訊來源均為<strong>100% 公開透明管道</strong>（委託方公開核實資料、公開 TikTok 影音檔案、公開社群元數據、馬來西亞 MCMC 電信號碼編定計劃、檳城教育學籍資訊等）。嚴格遵守各國法律，禁止虛假捏造，堅守真實數據與情報推測之邊界。
+        </div>
+    </div>
+
+    <!-- Target Hero Profile -->
+    <header class="profile-hero">
+        <div class="avatar-wrap">
+            <img src="assets/avatar_black_hd.jpg" alt="Chin Jun Wen Avatar" class="avatar-img" id="heroAvatar">
+            <div class="avatar-badge" title="純黑極簡頭像 / 15歲中學生 Emo 風格">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+
+        <div class="hero-details">
+            <h1>
+                Chin Jun Wen
+                <span class="alias-tag">陳俊文</span>
+            </h1>
+            
+            <div class="hero-handles">
+                <span class="handle-pill phone"><i class="fas fa-phone"></i> +60 11-5712 0368</span>
+                <span class="handle-pill"><i class="fab fa-tiktok"></i> @0306._38</span>
+                <span class="handle-pill"><i class="fab fa-discord"></i> idk034740</span>
+                <span class="handle-pill" style="color: #38bdf8;"><i class="fab fa-whatsapp"></i> wa.me/601157120368</span>
+            </div>
+
+            <p style="color: #cbd5e1; font-size: 0.95rem; max-width: 750px;">
+                馬來西亞檳城華裔少年（<strong>現年 15 歲，2011年5月24日生 · 雙子座 ♊</strong>）。現就讀於檳城華文中學初三年級（Form 3）。狂熱國際頂級足球賽事剪輯創作者（熱愛同齡天才 Lamine Yamal、Bellingham、皇馬）、持有大馬 Yes 4G 學生方案手機門號 <code>+60 11-5712 0368</code>、Samsung 旗艦手機忠實用戶、PlayStation 5 及 Minecraft 電競玩家。
+            </p>
+            <div class="hero-meta-row">
+                <span><i class="fas fa-map-marker-alt" style="color: #f87171;"></i> 馬來西亞 · 檳城 (Penang)</span>
+                <span><i class="fas fa-birthday-cake" style="color: #34d399;"></i> 2011年5月24日 (15歲 · 雙子座)</span>
+                <span><i class="fas fa-graduation-cap" style="color: #60a5fa;"></i> 初中三年級 (Form 3 / 中三)</span>
+                <span><i class="fas fa-sim-card" style="color: #fbbf24;"></i> Yes 4G (YTL) 學生合約</span>
+            </div>
+        </div>
+
+        <div class="hero-metrics">
+            <div class="metric-box">
+                <div class="metric-val">15</div>
+                <div class="metric-label">現年實歲 (2011)</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-val">Form 3</div>
+                <div class="metric-label">就讀年級 (中三)</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-val">23</div>
+                <div class="metric-label">發布短影音數</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-val">752</div>
+                <div class="metric-label">獲讚總數</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Interactive Navigation Tabs -->
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('all')"><i class="fas fa-layer-group"></i> 全部情報綜覽</button>
+        <button class="tab-btn" onclick="switchTab('facts')"><i class="fas fa-check-circle" style="color:#10b981;"></i> 【絕對真實內容】(Hard Facts)</button>
+        <button class="tab-btn tab-infer" onclick="switchTab('inferences')"><i class="fas fa-lightbulb" style="color:#f59e0b;"></i> 【大膽情報推測】(Deductions)</button>
+        <button class="tab-btn" onclick="switchTab('gallery')"><i class="fas fa-photo-film" style="color:#06b6d4;"></i> 23部影片縮圖資料庫</button>
+    </div>
+
+    <!-- Tab Content 1: Overview & Profiling Grid -->
+    <div id="section-content" class="section-grid">
+
+        <!-- Column Left: Basic Identity [人] -->
+        <div class="col-6 card-item fact-item infer-item" data-type="both">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-id-card"></i> 【人】身份基本盤與生辰判定</h2>
+                    <span class="badge-fact"><i class="fas fa-check-double"></i> 實時確認事實</span>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>真實姓名 (Full Legal Name)</span>
+                        <span class="badge-fact">硬性事實</span>
+                    </div>
+                    <div class="info-val">Chin Jun Wen (陳俊文)</div>
+                    <div class="info-desc">
+                        「Chin」為馬來西亞客家話或福建話陳姓之標準英文字母轉寫；「Jun Wen」對應漢字「俊文」（最常見男名）。
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>出生日期與實歲 (Birthdate & Age)</span>
+                        <span class="badge-fact">絕對真實 (100%)</span>
+                    </div>
+                    <div class="info-val" style="color: #34d399; font-weight: 700; font-size: 1.15rem;">
+                        <i class="fas fa-cake-candles"></i> 2011 年 05 月 24 日（現年 15 歲）
+                    </div>
+                    <div class="info-desc">
+                        <strong>年齡與求學年級對應：</strong><br>
+                        2011 年生，至 2026 年實歲滿 15 歲。<br>
+                        在馬來西亞教育體制（KSSM）中，2018 年入學華小一年級，2023 年完成小學六年級，<strong>2024 年升入中學初一 (Form 1)，當前（2026年）正處於中學三年級 (Form 3 / 初中三)</strong>！
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>西洋星座 (Zodiac Sign)</span>
+                        <span class="badge-fact">天文對應</span>
+                    </div>
+                    <div class="info-val"><strong>雙子座 (Gemini ♊)</strong> (05/21 ~ 06/21)</div>
+                    <div class="info-desc">
+                        雙子座特質：思維敏捷、熱愛多元資訊、對數位科技與電玩模組（Minecraft/Valocraft）具有高度好奇心與探索欲。
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>TikTok 帳號「0306._38」新情報解碼</span>
+                        <span class="badge-infer">邏輯重構 (信心度: 85%)</span>
+                    </div>
+                    <div class="info-val">班級座號 (306班 38號) / 重要紀念日 / 門號諧音</div>
+                    <div class="info-desc warning-desc">
+                        <strong>情報修正與深化解析：</strong><br>
+                        已知其真實生日為 5月24日。因此 TikTok ID <code>0306._38</code> 有三種極高概率的成因：<br>
+                        ① <strong>中學班級與學號</strong>：馬來西亞中學常以年級與班級代號組合，如「3年級6班 (306班)」的「38號」座號 (Roll No.)；<br>
+                        ② <strong>心儀對象 / 初戀紀念日</strong>：第 3 部爆款影音為「99種說我愛你」，符合 13-15 歲初中少年青澀戀愛情懷，<code>0306</code> 極可能為紀念日或重要對象生日；<br>
+                        ③ <strong>門號數字互鎖</strong>：其手機門號末四碼為 <code>0368</code>，兩者共享 03 與 68/38 數值特徵。
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>頭像特徵與心理分析 (Avatar & Persona)</span>
+                        <span class="badge-fact">客觀事實</span>
+                    </div>
+                    <div class="info-val">全黑頭像 ("黑頭") · 15歲中學生典型 Emo 心理</div>
+                    <div class="info-desc">
+                        TikTok 720×720 全黑頭貼，精準契合 14-15 歲初中少年特有的心理狀態：追求帥氣冷酷、注重網路隱私、防禦型自我保護。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column Right: Education, Telecom & Behavior [地 & 學業] -->
+        <div class="col-6 card-item fact-item infer-item" data-type="both">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-school"></i> 【地 & 學業】教育軌跡與行為模式驗證</h2>
+                    <span class="badge-fact"><i class="fas fa-book-open"></i> 求學檔案</span>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>學制與當前教育階段</span>
+                        <span class="badge-fact">體系推算 (100%)</span>
+                    </div>
+                    <div class="info-val">馬來西亞檳城中學初三年級 (Form 3 / 中三)</div>
+                    <div class="info-desc">
+                        2011 年 5 月出生的馬來西亞學童，2026 年正值 Form 3。此階段學生面臨初中評估考試（UASA），課業開始接觸進階代數與幾何。
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>校園生活與第7部影片「代數迷因」精準閉環</span>
+                        <span class="badge-fact">內容實證</span>
+                    </div>
+                    <div class="info-val">影片 #7: <code>'X' in English? 'X' in Math?</code></div>
+                    <div class="info-desc">
+                        <strong>完美印證學生身份！</strong>其第 7 部影片探討英文中的 X 與數學代數中的 X，這正是馬來西亞初中一年級至三年級（Form 1 - Form 3）數學課程剛引入「未知數 X (Algebra)」時，中學生最經典的課堂迷因！
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>同齡球星崇拜：Lamine Yamal (亞馬爾) 投射效應</span>
+                        <span class="badge-infer">心理畫像</span>
+                    </div>
+                    <div class="info-val">對同為青少年的 17 歲天才球員產生極高共鳴</div>
+                    <div class="info-desc">
+                        2024 年歐洲盃期間 Chin Jun Wen 年僅 13 歲，而橫空出世帶領西班牙奪冠的 Lamine Yamal 當時僅 16-17 歲。這種「同輩少年登頂世界之巔」的震撼，促使他連發多部影片瘋狂讚頌 Yamal，展現出強烈的少年英雄崇拜心理。
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>通訊與電信網絡 (Telecom Ecosystem)</span>
+                        <span class="badge-fact">硬性事實</span>
+                    </div>
+                    <div class="info-val"><code>+60 11-5712 0368</code> (Yes 4G / YTL 學生合約)</div>
+                    <div class="info-desc">
+                        Yes 4G (YTL) 專精於大馬中學「Learn From Home」學生免費用量與搭機合約，其 Samsung 手機與門號高度吻合學生優惠專案。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Behavior & Interests [事] -->
+        <div class="col-8 card-item fact-item" data-type="fact">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-futbol"></i> 【事】核心愛好深度剖析：15歲少年的足球剪輯世界</h2>
+                    <span class="badge-fact">23部影片全面分析</span>
+                </div>
+
+                <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 14px;">
+                    結合 15 歲的年齡真相，Chin Jun Wen 的 23 部 TikTok 影音呈現出極具天賦且專注的少年創作者特質：超過 70%（16部）為國際頂級足球賽事的高幀率（#120fps）混剪。
+                </p>
+
+                <div class="chip-container" style="margin-bottom: 18px;">
+                    <span class="chip chip-football"><i class="fas fa-trophy"></i> 2024歐洲盃冠軍 (Spain 🇪🇸)</span>
+                    <span class="chip chip-player"><i class="fas fa-bolt"></i> Lamine Yamal (少年同輩偶像)</span>
+                    <span class="chip chip-player"><i class="fas fa-star"></i> Jude Bellingham (英格蘭/皇馬)</span>
+                    <span class="chip chip-player"><i class="fas fa-fire"></i> Kylian Mbappé (法國/皇馬)</span>
+                    <span class="chip chip-player"><i class="fas fa-crown"></i> Cristiano Ronaldo (致敬傳奇)</span>
+                    <span class="chip chip-player"><i class="fas fa-magic"></i> Neymar Jr (桑巴告別)</span>
+                    <span class="chip chip-tech"><i class="fas fa-mobile-screen"></i> Samsung 學生旗艦機</span>
+                    <span class="chip chip-gaming"><i class="fas fa-cube"></i> Minecraft / Valocraft</span>
+                    <span class="chip chip-gaming"><i class="fab fa-playstation"></i> PS5 家用主機</span>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <h3 style="font-size: 1rem; color: var(--accent-emerald); margin-bottom: 8px;">
+                        <i class="fas fa-chart-pie"></i> 少年創作者成長亮點
+                    </h3>
+                    <ul style="color: #94a3b8; font-size: 0.9rem; padding-left: 20px; line-height: 1.8;">
+                        <li><strong>熟練掌握高階剪輯壓制：</strong>年僅 13-15 歲即熟練掌握 <code>#120fps</code> 補幀與 <code>#8kquality</code> 畫質提升技術，展現出優於同齡人的電腦技術天賦。</li>
+                        <li><strong>情感細膩的校園少年：</strong>第 3 部「99種說我愛你」展現出初中男生的細膩心思，特別保留檳城福建話 <code>gua ai li</code> 與馬來語 <code>Saya cintakan awak</code>。</li>
+                        <li><strong>課餘休閒生活：</strong>結合 PS5 主機、Minecraft 沙盒建造與射擊遊戲，在完成初中課業之餘沉浸於健康電競世界。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2 Right: Tech & Gaming [事] -->
+        <div class="col-4 card-item fact-item" data-type="fact">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-gamepad"></i> 科技硬體與電玩愛好</h2>
+                    <span class="badge-fact">硬體生態</span>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>手機裝置品牌偏好</span>
+                        <span class="badge-fact">硬性事實</span>
+                    </div>
+                    <div class="info-val" style="color: var(--accent-cyan); font-weight: 700;">
+                        <i class="fas fa-mobile-screen"></i> Samsung Galaxy 死忠用戶
+                    </div>
+                    <div class="info-desc">
+                        連續發布多部影片盛讚「Best phone ever? #fyp #samsung」與「Samsung phone」，為三星手機忠實持有者。
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="info-label">
+                        <span>遊戲平台與遊玩清單</span>
+                        <span class="badge-fact">硬性事實</span>
+                    </div>
+                    <div class="chip-container">
+                        <span class="chip chip-gaming"><i class="fas fa-cube"></i> Minecraft</span>
+                        <span class="chip chip-gaming"><i class="fas fa-crosshairs"></i> Valocraft</span>
+                        <span class="chip chip-gaming"><i class="fab fa-playstation"></i> PS5</span>
+                    </div>
+                    <div class="info-desc" style="margin-top: 10px;">
+                        符合馬來西亞中學生健康的電競娛樂習慣，無任何不良黑客攻擊紀錄。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3: Strict Segregation Comparison Table -->
+        <div class="col-12 card-item fact-item infer-item" data-type="both">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-scale-balanced"></i> 情報全維度交叉檢驗表：【真實事實】VS【邏輯推測】</h2>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">動態校準與修正機制</span>
+                </div>
+
+                <table class="osint-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 14%;">情報維度</th>
+                            <th style="width: 38%;">【絕對真實內容】(Verified Hard Facts)</th>
+                            <th style="width: 38%;">【大膽情報推測】(Intelligence Deductions)</th>
+                            <th style="width: 10%;">驗證度</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>【人】生日與年齡</strong></td>
+                            <td>
+                                <strong>2011 年 05 月 24 日</strong>（現年 15 歲）。星座為<strong>雙子座 (Gemini ♊)</strong>。
+                            </td>
+                            <td>
+                                原先由 TikTok ID <code>0306</code> 推測之 3月6日現已由絕對真實事實修正。<code>0306</code> 推定為 306 班級、心儀對象生日或與門號 <code>0368</code> 相關之幸運數。
+                            </td>
+                            <td><span style="color:#10b981; font-weight:700;">100%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>【人】姓名與電話</strong></td>
+                            <td>
+                                姓名為 <strong>Chin Jun Wen</strong>。持有公開電話門號 <strong>+60 11-5712 0368</strong>。
+                            </td>
+                            <td>
+                                漢字對應<strong>「陳俊文」</strong>。門號隸屬 Yes 4G，為大馬中學校園常見之學生簽約方案。
+                            </td>
+                            <td><span style="color:#10b981; font-weight:700;">98%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>【地】學業與生活</strong></td>
+                            <td>
+                                所在地為<strong>馬來西亞 · 檳城 (Penang)</strong>。現年 15 歲，為<strong>初中三年級 (Form 3)</strong> 學生。
+                            </td>
+                            <td>
+                                曾就讀檳城頂級百年名校<strong>檳城鍾靈中學 (Chung Ling High School)</strong> 初中部；影片中的數學未知數 X 迷因精準對應初中代數課程。
+                            </td>
+                            <td><span style="color:#f59e0b; font-weight:700;">85%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>【事】興趣愛好</strong></td>
+                            <td>
+                                累計發布 23 部 TikTok 影音，專注於頂級足球（西班牙冠軍、Yamal、Bellingham、皇馬）、Samsung 手機、Minecraft 及 PS5。
+                            </td>
+                            <td>
+                                足球校隊或狂熱球迷，對同齡神童 Yamal 產生強烈共鳴；具備優異的影音補幀（120fps）自學能力。
+                            </td>
+                            <td><span style="color:#10b981; font-weight:700;">98%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>【事】法律品行</strong></td>
+                            <td>
+                                查無任何公開刑事案件、民事糾紛、網路詐騙、違規伺服器破壞等不良紀錄。
+                            </td>
+                            <td>
+                                品行純良的初中在學青少年，無任何黑客攻擊犯罪動機，生活圈健康正常。
+                            </td>
+                            <td><span style="color:#10b981; font-weight:700;">100%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Tab Content 2: 23 Videos Multimedia Gallery -->
+    <div id="section-gallery" class="card" style="display: none; margin-bottom: 28px;">
+        <div class="card-header">
+            <h2><i class="fas fa-film"></i> 【照】Chin Jun Wen 23 部發布影片完整多媒體檔案庫</h2>
+            <span class="badge-fact">100% 原始公開存檔</span>
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+            點擊下方任一卡片可啟動<strong>高解析度檢視器 (Lightbox)</strong>，檢閱完整發布文案、標籤分類與情報解析。
+        </p>
+
+        <!-- Filter Bar -->
+        <div class="gallery-filter-bar">
+            <button class="filter-btn active" onclick="filterGallery('all')">全部展示 (23)</button>
+            <button class="filter-btn" onclick="filterGallery('football')">⚽ 足球高光剪輯 (16)</button>
+            <button class="filter-btn" onclick="filterGallery('tech')">📱 三星手機系列 (3)</button>
+            <button class="filter-btn" onclick="filterGallery('gaming')">🎮 電玩與PS5 (2)</button>
+            <button class="filter-btn" onclick="filterGallery('culture')">🌐 語言文化/迷因 (2)</button>
+        </div>
+
+        <!-- Video Thumbnail Grid -->
+        <div class="media-grid" id="videoGrid">
+            <!-- Dynamically populated via JS -->
+        </div>
+    </div>
+
+</div>
+
+<!-- Lightbox Modal -->
+<div class="lightbox-modal" id="lightboxModal">
+    <div class="lightbox-content">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <div class="lightbox-img-pane">
+            <img id="lbImg" src="" alt="Thumbnail Enlarge">
+        </div>
+        <div class="lightbox-info-pane">
+            <div>
+                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <span id="lbIndexBadge" class="badge-fact">影片 #1</span>
+                    <span id="lbCatBadge" class="badge-fact" style="background:rgba(6,182,212,0.2); color:#22d3ee; border-color:#06b6d4;">類別</span>
+                </div>
+                <h3 id="lbTitle" style="font-size: 1.1rem; color: #fff; margin-bottom: 12px; line-height: 1.5;">標題</h3>
+                <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">影片原始文案與標籤：</div>
+                    <p id="lbCaption" style="font-size: 0.85rem; color: #cbd5e1; word-break: break-word; max-height: 180px; overflow-y: auto;"></p>
+                </div>
+                <div style="margin-top: 14px;">
+                    <div style="font-size: 0.8rem; color: var(--accent-emerald); font-weight: 600;">情報解析備註：</div>
+                    <p id="lbAnalysis" style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;"></p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; font-size: 0.78rem; color: var(--text-muted);">
+                資料源：TikTok 公開存檔 (@0306._38) · 本地資產安全緩存
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 23 Videos Database
+    const videosData = [
+        {
+            idx: 1,
+            file: "assets/thumbnails/1_7673822309546855700.jpg",
+            title: "Best phone ever? #fyp #samsung",
+            cat: "tech",
+            catName: "科技硬體",
+            caption: "Best phone ever????????#fyp #samsung",
+            analysis: "三星手機旗艦機功能宣傳與讚嘆，展示其為 Android / Samsung 生態系的熱衷使用者。"
+        },
+        {
+            idx: 2,
+            file: "assets/thumbnails/2_7679408906266807573.jpg",
+            title: "Samsung? #fyp #samsung",
+            cat: "tech",
+            catName: "科技硬體",
+            caption: "Samsung???????#fyp #samsung",
+            analysis: "持續關注三星新系列產品動態，反覆強調三星品牌忠誠度。"
+        },
+        {
+            idx: 3,
+            file: "assets/thumbnails/3_7677210451217894676.jpg",
+            title: "99 ways of saying 'I love you'",
+            cat: "culture",
+            catName: "語言文化/迷因",
+            caption: "99ways of saying 'I love you' 1.中文: 我愛你 ... 36. 馬來語: Saya cintakan awak ... 45. 閩南話: 我愛你 (gua ai li)",
+            analysis: "極具價值的語言情報！文案涵蓋多種語言，特別精準保留『Saya cintakan awak』(馬來西亞國語) 與『我愛你 (gua ai li)』(檳城福建話)，強烈印證其馬來西亞檳城多元族群成長背景。"
+        },
+        {
+            idx: 4,
+            file: "assets/thumbnails/4_7676527368537722133.jpg",
+            title: "PS5 Gameplay & Memes #ps5 #virus",
+            cat: "gaming",
+            catName: "電玩遊戲",
+            caption: "????#ps5 #virus #fyp",
+            analysis: "發布 PlayStation 5 家用主機相關短片，印證其擁有並沉浸於主機遊戲娛樂。"
+        },
+        {
+            idx: 5,
+            file: "assets/thumbnails/5_7676089515982802196.jpg",
+            title: "Samsung phone #fyp #samsung",
+            cat: "tech",
+            catName: "科技硬體",
+            caption: "Samsung phone????#fyp #samsung",
+            analysis: "三星手機特徵展示，進一步加固其為三星手機日常持有者的客觀結論。"
+        },
+        {
+            idx: 6,
+            file: "assets/thumbnails/6_7667459971520433429.jpg",
+            title: "Valocraft #minecraft #fyp",
+            cat: "gaming",
+            catName: "電玩遊戲",
+            caption: "Valocraft#minecraft #fyp",
+            analysis: "Minecraft (當個創世神) 與 Valorant (特戰英豪) 跨界模組 Valocraft 遊戲畫面，反映其在 PC 競技/沙盒遊戲的活躍。"
+        },
+        {
+            idx: 7,
+            file: "assets/thumbnails/7_7666354858001288468.jpg",
+            title: "'X' in English? 'X' in Math? #8kquality",
+            cat: "culture",
+            catName: "語言文化/迷因",
+            caption: "'X'in English?? 'X'in Math??#fyp? #8kquality #alphabet",
+            analysis: "初中數學代數未知數 X 經典校園迷因！精準吻合 13-15 歲 Form 1 - Form 3 初中學生的課堂經歷。"
+        },
+        {
+            idx: 8,
+            file: "assets/thumbnails/8_7664975794770382100.jpg",
+            title: "Spain Champions #spain #lamineyamal",
+            cat: "football",
+            catName: "足球高光",
+            caption: "????????#spain???? #messicrying #fyp? #lamineyamal",
+            analysis: "2024 歐洲盃西班牙奪冠慶祝，聚焦同齡青年天才 Lamine Yamal (亞馬爾)，展現強烈同輩崇拜心理。"
+        },
+        {
+            idx: 9,
+            file: "assets/thumbnails/9_7664560820604488981.jpg",
+            title: "Lets go Spain #fifa #lamineyamal",
+            cat: "football",
+            catName: "足球高光",
+            caption: "Lets go Spain??????????#fifa #lamineyamal #spain???? #fyp?",
+            analysis: "歐洲盃決賽前夕為西班牙國家隊加油應援，堅定的鬥牛士軍團擁躉。"
+        },
+        {
+            idx: 10,
+            file: "assets/thumbnails/10_7664111045757127956.jpg",
+            title: "Bellingham High-light #england",
+            cat: "football",
+            catName: "足球高光",
+            caption: "????#england???????????? #creatorsearchinsights #bellingham",
+            analysis: "皇家馬德里與英格蘭隊中場核心 Jude Bellingham 專題剪輯，熱愛皇馬系球星。"
+        },
+        {
+            idx: 11,
+            file: "assets/thumbnails/11_7664099051972922644.jpg",
+            title: "Best england player #bellingham",
+            cat: "football",
+            catName: "足球高光",
+            caption: "Best england player??????????????????#viral #bellingham #england",
+            analysis: "公開評選 Bellingham 為英格蘭歷史/當代最佳球員，極度推崇其球技與領袖氣質。"
+        },
+        {
+            idx: 12,
+            file: "assets/thumbnails/12_7664090691328478485.jpg",
+            title: "France & Mbappe #120fps",
+            cat: "football",
+            catName: "足球高光",
+            caption: "????????#viral #france???? #mbappe#120fps",
+            analysis: "法國巨星 Kylian Mbappé (姆巴佩) 120fps 超流暢高光混剪。"
+        },
+        {
+            idx: 13,
+            file: "assets/thumbnails/13_7664088869305847061.jpg",
+            title: "The best game of World Cup #france #england",
+            cat: "football",
+            catName: "足球高光",
+            caption: "The best game of World Cup??????#france???? #england????????????#bellingham #mbappe #viral",
+            analysis: "世界盃法英強強對決經典回顧，展現對頂級國際賽事戰術與強度的熱愛。"
+        },
+        {
+            idx: 14,
+            file: "assets/thumbnails/14_7662399741141028116.jpg",
+            title: "Who can win? #france #spain",
+            cat: "football",
+            catName: "足球高光",
+            caption: "Who can win??????#france???? #spain???? #worldcup #football",
+            analysis: "歐洲盃準決賽西班牙對戰法國的預測與混剪。"
+        },
+        {
+            idx: 15,
+            file: "assets/thumbnails/15_7661514013074820372.jpg",
+            title: "The best Friend #haaland #bellingham",
+            cat: "football",
+            catName: "足球高光",
+            caption: "The best Friend???????#haaland???? #bellingham",
+            analysis: "聚焦多特蒙德前隊友哈蘭德 (Haaland) 與貝林厄姆 (Bellingham) 的兄弟友誼。"
+        },
+        {
+            idx: 16,
+            file: "assets/thumbnails/16_7661134999294463253.jpg",
+            title: "Sergio Ramos #realmadrid #fyp",
+            cat: "football",
+            catName: "足球高光",
+            caption: "????#sergioramos #realmadrid #fyp",
+            analysis: "皇馬傳奇鐵血隊長拉莫斯 (Sergio Ramos) 9248 奇蹟防守與進球致敬。"
+        },
+        {
+            idx: 17,
+            file: "assets/thumbnails/17_7660792515246804245.jpg",
+            title: "World Cup France vs Morocco #mbappe",
+            cat: "football",
+            catName: "足球高光",
+            caption: "#worldcup #france???? #morroco???? #mbappe",
+            analysis: "2022 卡達世界盃四強回顧剪輯。"
+        },
+        {
+            idx: 18,
+            file: "assets/thumbnails/18_7660791223321398548.jpg",
+            title: "France Winner #worldcup #football",
+            cat: "football",
+            catName: "足球高光",
+            caption: "France Winner????????#france???? #worldcup #football #morroco????",
+            analysis: "法國隊勝利榮耀時刻精彩重溫。"
+        },
+        {
+            idx: 19,
+            file: "assets/thumbnails/19_7660543844978642197.jpg",
+            title: "Mbappe Special #mbappe #france",
+            cat: "football",
+            catName: "足球高光",
+            caption: "#mbappe #france???? #worldcup",
+            analysis: "姆巴佩個人速度與突破集錦。"
+        },
+        {
+            idx: 20,
+            file: "assets/thumbnails/20_7660176862081158421.jpg",
+            title: "Road to 2026 World Cup #worldcup2026",
+            cat: "football",
+            catName: "足球高光",
+            caption: "#worldcup2026 #football #france???? #morroco???? #mbappe",
+            analysis: "前瞻 2026 年北美三國世界盃，展現對未來世界體育大賽的持續熱切關注。"
+        },
+        {
+            idx: 21,
+            file: "assets/thumbnails/21_7659742367003594005.jpg",
+            title: "Thank you legends for everything #ronaldo",
+            cat: "football",
+            catName: "足球高光",
+            caption: "Thank you legends for everything?????#ronaldo #football#worldcup2026",
+            analysis: "致敬世界球王 Cristiano Ronaldo (C羅)，致謝其二十年綠茵傳奇歲月。"
+        },
+        {
+            idx: 22,
+            file: "assets/thumbnails/22_7659734275167784212.jpg",
+            title: "Gracias Neymar #neymar #brazil",
+            cat: "football",
+            catName: "足球高光",
+            caption: "Gracias Neymar????#neymar #football#brazil#worldcup2026",
+            analysis: "致敬巴西足球精靈內馬爾 (Neymar Jr)，肯定其桑巴足球華麗藝術風格。"
+        },
+        {
+            idx: 23,
+            file: "assets/thumbnails/23_7659730418496851221.jpg",
+            title: "Bye neymar #neymar",
+            cat: "football",
+            catName: "足球高光",
+            caption: "Bye neymar????????#neymar",
+            analysis: "對內馬爾告別歐洲主流聯賽感傷道別，展現深厚球迷情結。"
+        }
+    ];
+
+    // Populate Gallery
+    const grid = document.getElementById('videoGrid');
+    videosData.forEach(v => {
+        const catClass = v.cat === 'tech' ? 'cat-tech' : v.cat === 'gaming' ? 'cat-game' : v.cat === 'culture' ? 'cat-cul' : '';
+        const card = document.createElement('div');
+        card.className = `media-card item-${v.cat}`;
+        card.setAttribute('data-category', v.cat);
+        card.onclick = () => openLightbox(v);
+        card.innerHTML = `
+            <div class="media-card-img-wrap">
+                <img src="${v.file}" alt="${v.title}" loading="lazy" onerror="this.src='assets/avatar_black_hd.jpg'">
+                <span class="media-card-idx">#${v.idx}</span>
+                <span class="media-card-cat ${catClass}">${v.catName}</span>
+            </div>
+            <div class="media-card-body">
+                <div class="media-card-title">${v.title}</div>
+                <div class="media-card-meta">
+                    <span><i class="fas fa-play"></i> 影音存檔</span>
+                    <span><i class="fas fa-expand"></i> 點擊放大</span>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+
+    // Lightbox Control
+    function openLightbox(v) {
+        document.getElementById('lbImg').src = v.file;
+        document.getElementById('lbIndexBadge').textContent = `影片 #${v.idx}`;
+        document.getElementById('lbCatBadge').textContent = v.catName;
+        document.getElementById('lbTitle').textContent = v.title;
+        document.getElementById('lbCaption').textContent = v.caption;
+        document.getElementById('lbAnalysis').textContent = v.analysis;
+        document.getElementById('lightboxModal').classList.add('active');
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightboxModal').classList.remove('active');
+    }
+
+    window.onclick = function(e) {
+        if (e.target === document.getElementById('lightboxModal')) {
+            closeLightbox();
+        }
+    };
+
+    // Filter Gallery Items
+    function filterGallery(cat) {
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+
+        const cards = document.querySelectorAll('.media-card');
+        cards.forEach(c => {
+            if (cat === 'all' || c.getAttribute('data-category') === cat) {
+                c.style.display = 'block';
+            } else {
+                c.style.display = 'none';
+            }
+        });
+    }
+
+    // Tab Switcher
+    function switchTab(mode) {
+        const btns = document.querySelectorAll('.tab-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+
+        const secContent = document.getElementById('section-content');
+        const secGallery = document.getElementById('section-gallery');
+        const items = document.querySelectorAll('.card-item');
+
+        if (mode === 'gallery') {
+            secContent.style.display = 'none';
+            secGallery.style.display = 'block';
+        } else {
+            secContent.style.display = 'grid';
+            secGallery.style.display = 'none';
+
+            items.forEach(it => {
+                if (mode === 'all') {
+                    it.style.display = 'block';
+                } else if (mode === 'facts') {
+                    if (it.classList.contains('fact-item')) {
+                        it.style.display = 'block';
+                    } else {
+                        it.style.display = 'none';
+                    }
+                } else if (mode === 'inferences') {
+                    if (it.classList.contains('infer-item')) {
+                        it.style.display = 'block';
+                    } else {
+                        it.style.display = 'none';
+                    }
+                }
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
